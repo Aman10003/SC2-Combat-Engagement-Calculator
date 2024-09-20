@@ -1,4 +1,5 @@
-import units
+import units_def
+import reference as ref
 import numpy as np
 from nicegui import ui
 
@@ -9,8 +10,10 @@ class functions:
     def dameage(self, attacker, defender):
         base_dam = attacker.weapon
         armor = defender.armor
-    def main(self):
+    def main():
         x=1
         
 if __name__ == "__main__":
-    function.main()
+    functions.main()
+    units_def.units
+
