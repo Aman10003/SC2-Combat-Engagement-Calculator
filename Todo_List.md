@@ -2,6 +2,7 @@
 
 ## Tasks
 
+- [ ] Unit Testing
 - [ ] GUI
 - [ ] Damage Calculations
 - [ ] Units Listing
