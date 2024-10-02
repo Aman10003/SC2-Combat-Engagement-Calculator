@@ -25,22 +25,22 @@ class functions:
     def units_list(self):
         self.units_ref = ref.ref.units_list()
         
+    def ttk(self,attacker: u.unit, weapon: str, defender: u.unit, weapon_upgrade: int, armor_upgrade: int, shield_armor = 0)
 
-    def damage(self, attacker: u.unit, weapon: str, defender: u.unit, weapon_upgrade, splash = 1, prismatic = False):
+    def damage(self, attacker: u.unit, weapon: str, defender: u.unit, weapon_upgrade: int, splash: float = 1, prismatic = False):
         base_dam = attacker.weapon[weapon]
         ["dmg"[1]]
         #Fix bonus bamage calc
-        if attacker.weapon['bonus'[3]] == defender:
-            x=1
-            bonus = attacker.weapon['bonus'[1]]
-            bonus_scaling = attacker.weapon['bonus'[2]]
+        if attacker.weapon[weapon]['bonus'[3]] == defender.attributes:
+            bonus = attacker.weapon[weapon]['bonus'[1]]
+            bonus_scaling = attacker.weapon[weapon]['bonus'[2]]
         else:
             bonus = 0
             bonus_scaling = 0
         # Damage Dealt: This is equal to (Base attack + Bonus damage + Attack upgrades)*Corrupted*Splash*Hallucinated*Prismatic.
         # Corrupted is removed
         #Need to add halucinated and prismatic calculations
-        return (base_dam + bonus + (attacker.weapon['dmg'][2] + bonus_scaling) * weapon_upgrade) * splash
+        return (base_dam + bonus + (attacker.weapon[weapon]['dmg'][2] + bonus_scaling) * weapon_upgrade) * splash
         
     def main():
         x=1
