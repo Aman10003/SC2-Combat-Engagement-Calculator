@@ -8,9 +8,10 @@
 - [ ] Units Listing
 - [ ] Structure Listing
 - [ ] Raven seaker missle
+- [ ] Void Ray damage calculations
 - [ ] Guardian Shield
 - [ ] Zerg Regen
-- [ ] Uupgrades
+- [ ] Upgrades
 - [ ] Spells
 
 ## Upcoming

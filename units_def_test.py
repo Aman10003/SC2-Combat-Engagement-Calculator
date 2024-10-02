@@ -19,7 +19,11 @@ def test_weapon_add():
     units["banshee"].add_weapon('Backlash Rockets', 12, 1, 0.89, quantity=2, target='gnd')
     weapon_name = list(units['banshee'].weapon.keys())
     assert weapon_name == ['Backlash Rockets']
-    print(units['banshee'].weapon[weapon_name[0]])
+
+# def test_weapon_damage():
+#     units={'banshee':u.unit(140,race='terran', attr={'light':True,'mech':True}, ground=False)}
+#     units["banshee"].add_weapon('Backlash Rockets', 12, 1, 0.89, quantity=2, target='gnd')
+#     assert units['banshee'].weapon['Backlash Rockets']
 
 def test_weapon_stats():
     units={'banshee':u.unit(140,race='terran', attr={'light':True,'mech':True}, ground=False)}
