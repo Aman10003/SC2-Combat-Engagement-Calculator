@@ -2,6 +2,7 @@ import units_def as u
 import reference as ref
 import numpy as np
 from nicegui import ui
+import port as p
 
 class functions:
 
@@ -25,8 +26,13 @@ class functions:
     def units_list(self):
         self.units_ref = ref.ref.units_list()
         
-    def ttk(self,attacker: u.unit, weapon: str, defender: u.unit, weapon_upgrade: int, armor_upgrade: int, shield_armor = 0)
+    def ttk(self,attacker: u.unit, weapon: str, defender: u.unit, weapon_upgrade: int, armor_upgrade: int, shield_armor = 0):
+        # calculates attacks to kill
+        # Does not work for shields yet
+        hits_to_kill = defender.hp / self.damage(attacker, )
 
+
+    #Damage Calculations
     def damage(self, attacker: u.unit, weapon: str, defender: u.unit, weapon_upgrade: int, splash: float = 1, prismatic = False):
         base_dam = attacker.weapon[weapon]
         ["dmg"[1]]
@@ -41,7 +47,8 @@ class functions:
         # Corrupted is removed
         #Need to add halucinated and prismatic calculations
         return (base_dam + bonus + (attacker.weapon[weapon]['dmg'][2] + bonus_scaling) * weapon_upgrade) * splash
-        
+
+
     def main():
         x=1
         
@@ -51,5 +58,6 @@ if __name__ in {"__main__", "__mp_main__"}:
     # units_def.units
     units = functions.units_list()
     functions.gui()
-    ui.run(port=8084)
+    port_assignment = p.find_unused_port
+    ui.run(port=port_assignment)
 
