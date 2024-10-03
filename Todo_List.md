@@ -13,6 +13,7 @@
 - [ ] Zerg Regen
 - [ ] Upgrades
 - [ ] Spells
+- [ ] Variable damage point time
 
 ## Upcoming
 
