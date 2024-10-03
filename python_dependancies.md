@@ -1,2 +1,3 @@
 - nicegui
 - psutil (for autoport assignment)
+- math

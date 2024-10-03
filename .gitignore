@@ -1,3 +1,8 @@
 
 /__pycache__
 /testing/__pycache__
+testing/__pycache__/units_def_test.cpython-312-pytest-8.3.3.pyc
+__pycache__/units_def.cpython-312.pyc
+__pycache__/reference.cpython-312.pyc
+*.pyc
+main_prototype.py

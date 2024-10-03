@@ -19,6 +19,7 @@ class ref:
         # Marauder
         self.units['Marauder'] = u.unit(45, race='terran', attr={'armored':True, 'bio':True})
         self.units['Marauder'].add_weapon("Punisher Grenades", 10, 1, 1.07, 10, "armored", 1, target="gnd")
+        return self.units
         
         
     #Function is used for internal testing only
