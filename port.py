@@ -1,3 +1,4 @@
+# This code was mostly created by chat-gpt 4o model
 import psutil
 
 def get_open_ports():
