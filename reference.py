@@ -11,8 +11,8 @@ class ref:
         self.units={}
         # Terran
         # Banshee
-        self.units['banshee'] = u.unit(140,race='terran', attr={'light':True,'mech':True}, ground=False)
-        self.units["banshee"].add_weapon('Backlash Rockets', 12, 1, 0.89, quantity=2, target='gnd')
+        self.units['Banshee'] = u.unit(140,race='terran', attr={'light':True,'mech':True}, ground=False)
+        self.units["Banshee"].add_weapon('Backlash Rockets', 12, 1, 0.89, quantity=2, target='gnd')
         # Marine
         self.units['Marine'] = u.unit(45, race='terran', attr={'light':True, 'bio':True})
         self.units["Marine"].add_weapon("Guass Rifle", 6, 1, 0.61, target="both")
@@ -24,13 +24,11 @@ class ref:
         
     #Function is used for internal testing only
     def main(self):
-        # units = {'banshee':u.unit(140,race='terran', attr={'light':True,'mech':True}, ground=False)}
-        # units["banshee"].add_weapon('Backlash Rockets', 12, 1, 0.89, quanity=2, target='gnd')
         # self.units_list()
-        print(self.units["banshee"].hp)
-        weapon_name = list(self.units['banshee'].weapon.keys())
+        print(self.units["Banshee"].hp)
+        weapon_name = list(self.units['Banshee'].weapon.keys())
         print(weapon_name)
-        print(self.units['banshee'].weapon[weapon_name[0]])
+        print(self.units['Banshee'].weapon[weapon_name[0]])
         
 
 

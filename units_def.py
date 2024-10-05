@@ -61,10 +61,10 @@ class unit:
 
 
 if __name__=='__main__':
-    units={'banshee':unit(140,race='terran', attr={'light':True,'mech':True}, ground=False)}
-    units["banshee"].add_weapon('Backlash Rockets', 12, 1, 0.89, quantity=2, target='gnd')
-    print(units["banshee"].hp)
-    print(units['banshee'].attributes)
-    weapon_name = list(units['banshee'].weapon.keys())
+    units={'Banshee':unit(140,race='terran', attr={'light':True,'mech':True}, ground=False)}
+    units["Banshee"].add_weapon('Backlash Rockets', 12, 1, 0.89, quantity=2, target='gnd')
+    print(units["Banshee"].hp)
+    print(units['Banshee'].attributes)
+    weapon_name = list(units['Banshee'].weapon.keys())
     print(weapon_name)
-    print(units['banshee'].weapon[weapon_name[0]])
+    print(units['Banshee'].weapon[weapon_name[0]])

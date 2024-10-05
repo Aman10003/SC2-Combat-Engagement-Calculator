@@ -13,17 +13,25 @@ class functions:
     def gui(self):
         # ui.label('Hello NiceGUI!')
         # ui.markdown("#Main")
+
         # Asks useer to select attacker, weapon, defender and upgrades
         ui.label('Attacker')
-        attacker: u.unit = ui.select(self.units)
+        # Use unit names (keys from self.units) for selection, which are serializable
+        attacker_name: u.unit = ui.select(list(self.units.keys()))
+        # Map selected attacker name back to actual unit objects
+        attacker = self.units.get(attacker_name)
         ui.label('Weapon')
-        weapon: u.unit.add_weapon = ui.select(attacker.weapon)
+        weapon: u.unit.add_weapon = ui.select(list(attacker.weapon.keys()))
         ui.label('Attack Upgrade')
         weapons_upgrades = ui.toggle([0,1,2,3])
         ui.label('Defender')
-        defender: u.unit = ui.select(self.units)
+        defender_name: u.unit = ui.select(list(self.units.keys())) # Use the same unit list for defender
         ui.label('Armor Upgrade')
         armor_upgrade = ui.toggle([0,1,2,3])
+
+        # Map selected defender name back to actual unit objects
+        defender = self.units.get(defender_name)
+
 
         # Accounts for protoss shields and guardian shield
         if defender.race == 'protoss':
@@ -47,6 +55,7 @@ class functions:
         post_shield_armor_damage = self.post_armor_damage(pre_armor_damage, shield_armor_mod)
         post_armor_damage = self.post_armor_damage(pre_armor_damage, armor_mod)
 
+        
         # TODO: Deal with weapon qty value
         # TODO: Perform weapon target check
         # TODO: Spell damage bypasses armor
@@ -76,21 +85,6 @@ class functions:
         self.units = a.units_list()
 
 
-        # self.units_ref = ref.ref()
-        # self.units_ref.units_list()
-        # self.units = self.units_list.units()
-
-        # ref_instance = ref.ref()  # Create an instance of ref
-        # print("Ref instance created:", ref_instance)
-        
-        # self.units_ref = ref_instance.units_list()  # Call units_list to get the units
-        # print("Units ref:", self.units_ref)
-
-        # self.units = self.units_ref  # Store the units in self.units
-        # print("Units extracted:", self.units)
-
-
-
     # Hits to break shields
     # The leftover_damage calculation may be wrong. Liquidpedia isn't clear
     def htb(damage: float, shields: int):
@@ -111,7 +105,7 @@ class functions:
         return  hits_to_kill / cooldown
 
 
-    #Functions to calculate armor
+    # Functions to calculate armor
     # Calculated armor for hp
     def armor_calc(self, defender: u.unit, armor_upgrade: int, raven: bool = False, guardian_shield: bool = False, ultra_armor: bool = False):
         armor = defender.armor
@@ -160,14 +154,14 @@ class functions:
         return post_armor_damage
         
     def main():
-        x=1
+        function_instance = functions()
+        function_instance.units_list()
+        function_instance.gui()
+        ui.run(port=8084)
         
 # Needs __mp_main__ for ui.run (must be run in multiprocessor)
 if __name__ in {"__main__", "__mp_main__"}:
     # functions.main()
     # units_def.units
-    function_instance = functions()
-    function_instance.units_list()
-    function_instance.gui()
-    ui.run(port=8084)
+    functions.main()
 
