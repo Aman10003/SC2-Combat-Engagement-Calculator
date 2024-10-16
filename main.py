@@ -17,35 +17,35 @@ class functions:
         # Asks useer to select attacker, weapon, defender and upgrades
         ui.label('Attacker')
         # Use unit names (keys from self.units) for selection, which are serializable
-        attacker_name: u.unit = ui.select(list(self.units.keys()))
+        attacker_name: str = ui.select(list(self.units.keys()))
         # Map selected attacker name back to actual unit objects
-        attacker = self.units.get(attacker_name)
+        attacker: u.unit  = self.units.get(attacker_name)
         ui.label('Weapon')
         weapon: u.unit.add_weapon = ui.select(list(attacker.weapon.keys()))
         ui.label('Attack Upgrade')
-        weapons_upgrades = ui.toggle([0,1,2,3])
+        weapons_upgrades: int = ui.toggle([0,1,2,3])
         ui.label('Defender')
-        defender_name: u.unit = ui.select(list(self.units.keys())) # Use the same unit list for defender
+        defender_name: str  = ui.select(list(self.units.keys())) # Use the same unit list for defender
         ui.label('Armor Upgrade')
-        armor_upgrade = ui.toggle([0,1,2,3])
+        armor_upgrade: int = ui.toggle([0,1,2,3])
 
         # Map selected defender name back to actual unit objects
-        defender = self.units.get(defender_name)
+        defender: u.unit = self.units.get(defender_name)
 
 
         # Accounts for protoss shields and guardian shield
         if defender.race == 'protoss':
             ui.label('Shield Upgrade')
-            shield_armor = ui.toggle([0,1,2,3])
+            shield_armor: int = ui.toggle([0,1,2,3])
             # Guardian Shield only works against ranged attacks
             if attacker.weapon[weapon]['ranged']:
-                guardian_shield = ui.checkbox('Guardian Shield (+2 Armor)')
+                guardian_shield: bool = ui.checkbox('Guardian Shield (+2 Armor)')
         # If the attcker is terran, enable seeker missle selections
         if attacker.race == 'terran':
-            raven = ui.checkbox('Seeker Missle (+2 Armor)')
+            raven: bool = ui.checkbox('Seeker Missle (+2 Armor)')
         # Ultralisk Chitinous Plating option
         if defender == 'Ultralisk':
-            ultra_armor = ui.checkbox("Chitinous Plating (+2 Armor)")
+            ultra_armor: bool = ui.checkbox("Chitinous Plating (+2 Armor)")
         # Calculate pre armor damage
         pre_armor_damage = self.damage(attacker, weapon, defender, weapons_upgrades)
         # Calculate the effective armor and shield armor
@@ -136,16 +136,16 @@ class functions:
         base_dam = attacker.weapon[weapon]
         ["dmg"[1]]
         # TODO: Fix bonus bamage calc
-        if attacker.weapon[weapon]['bonus'[3]] == defender.attributes:
-            bonus = attacker.weapon[weapon]['bonus'[1]]
-            bonus_scaling = attacker.weapon[weapon]['bonus'[2]]
+        if attacker.weapon[weapon]['bonus'[2]] == defender.attributes:
+            bonus = attacker.weapon[weapon]['bonus'[0]]
+            bonus_scaling = attacker.weapon[weapon]['bonus'[1]]
         else:
             bonus = 0
             bonus_scaling = 0
         # Damage Dealt: This is equal to (Base attack + Bonus damage + Attack upgrades)*Corrupted*Splash*Hallucinated*Prismatic.
         # Corrupted is removed
         # TODO: Need to add halucinated and prismatic calculations
-        return (base_dam + bonus + (attacker.weapon[weapon]['dmg'][2] + bonus_scaling) * weapon_upgrade) * splash
+        return (base_dam + bonus + (attacker.weapon[weapon]['dmg'][1] + bonus_scaling) * weapon_upgrade) * splash
     # Post armor damage
     def post_armor_damage(self, damage, armor):
         post_armor_damage = damage - armor

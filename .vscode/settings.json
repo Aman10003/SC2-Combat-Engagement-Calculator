@@ -7,6 +7,6 @@
         "-s",
         ".",
         "-p",
-        "*_test.py"  // Adjust the pattern as needed
+        "*_test.py"
     ]
 }
