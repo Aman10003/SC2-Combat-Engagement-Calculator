@@ -14,14 +14,15 @@ class functions:
         # ui.label('Hello NiceGUI!')
         # ui.markdown("#Main")
 
-        # Asks useer to select attacker, weapon, defender and upgrades
+         # Asks useer to select attacker, weapon, defender and upgrades
         ui.label('Attacker')
         # Use unit names (keys from self.units) for selection, which are serializable
-        attacker_name: str = ui.select(list(self.units.keys()))
+        # attacker_name: str = ui.select(list(self.units.keys()))
+        attacker_name = ui.select(list(self.units.keys()), on_change=self.update_weapon_options)
         # Map selected attacker name back to actual unit objects
         attacker: u.unit  = self.units.get(attacker_name)
         ui.label('Weapon')
-        weapon: u.unit.add_weapon = ui.select(list(attacker.weapon.keys()))
+        self.weapon_select = ui.select([], label='Choose Weapon')  # Placeholder for weapon selection, initially empty
         ui.label('Attack Upgrade')
         weapons_upgrades: int = ui.toggle([0,1,2,3])
         ui.label('Defender')
@@ -33,13 +34,17 @@ class functions:
         defender: u.unit = self.units.get(defender_name)
 
 
-        # Accounts for protoss shields and guardian shield
-        if defender.race == 'protoss':
-            ui.label('Shield Upgrade')
-            shield_armor: int = ui.toggle([0,1,2,3])
-            # Guardian Shield only works against ranged attacks
-            if attacker.weapon[weapon]['ranged']:
-                guardian_shield: bool = ui.checkbox('Guardian Shield (+2 Armor)')
+        # Ensure defender is not None before accessing its attributes
+        if defender is not None:
+            # Accounts for protoss shields and guardian shield
+            if defender.race == 'protoss':
+                ui.label('Shield Upgrade')
+                shield_armor = ui.toggle([0, 1, 2, 3])
+                # Guardian Shield only works against ranged attacks
+                if attacker.weapon[self.weapon_select]['ranged']:
+                    guardian_shield = ui.checkbox('Guardian Shield (+2 Armor)')
+        else:
+            print(f"Defender '{defender_name}' not found in unit list.")
         # If the attcker is terran, enable seeker missle selections
         if attacker.race == 'terran':
             raven: bool = ui.checkbox('Seeker Missle (+2 Armor)')
@@ -47,7 +52,7 @@ class functions:
         if defender == 'Ultralisk':
             ultra_armor: bool = ui.checkbox("Chitinous Plating (+2 Armor)")
         # Calculate pre armor damage
-        pre_armor_damage = self.damage(attacker, weapon, defender, weapons_upgrades)
+        pre_armor_damage = self.damage(attacker, self.weapon_select, defender, weapons_upgrades)
         # Calculate the effective armor and shield armor
         armor_mod = self.armor_calc(defender, armor_upgrade, raven, guardian_shield, ultra_armor)
         shield_armor_mod = self.shield_armor_calc(shield_armor, raven, guardian_shield)
@@ -68,16 +73,27 @@ class functions:
                 if leftover_damage < 0.5:
                     leftover_damage = 0.5
             ui.label('Hits to break shields: %i hits', htbs)
-            ttbs = self.ttk(htbs, weapon['cooldown'])
+            ttbs = self.ttk(htbs, self.weapon_select['cooldown'])
             ui.label('Time to break shields: %fs', ttbs)
         # Hits and time to kill
         htk = self.htk(post_armor_damage, defender.hp, leftover_damage)
         ui.label('Hits to kill: %i hits', htk)
-        ttk = self.ttk(htk, weapon['cooldown'])
+        ttk = self.ttk(htk, self.weapon_select['cooldown'])
         ui.label('Time to kill: %fs', ttk)
         
         
-
+    # Event handler to update weapon selection based on the chosen attacker
+    def update_weapon_options(self, event):
+        attacker_name = event.value
+        attacker = self.units.get(attacker_name)
+        if attacker and attacker.weapon:
+            # Update weapon select options with the keys from attacker's weapon dictionary
+            self.weapon_select.options = list(attacker.weapon.keys())
+            self.weapon_select.update()  # Refresh the dropdown to reflect the cleared state           
+        else:
+            # If no weapons are available, clear the weapon options
+            self.weapon_select.options = []
+            self.weapon_select.update()  # Refresh the dropdown to reflect the cleared state
 
     # Imports units stats
     def units_list(self):
