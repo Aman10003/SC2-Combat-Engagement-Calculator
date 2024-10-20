@@ -12,6 +12,7 @@ class Attributes:
         self.heroic = heroic
         self.ground = ground
 
+
 class unit:
     def __init__(self, health: int, armor: int = 0, shield_armor: int = 0, shields: int = 0, 
                  race: str = None, ground: bool = True, attr: Attributes = None):
@@ -44,8 +45,7 @@ class unit:
         }
 
 
-
-if __name__=='__main__':
+if __name__ == '__main__':
     units = {'banshee': unit(140, race='terran', attr=Attributes(light=True, mech=True), ground=False)}
     units["banshee"].add_weapon('Backlash Rockets', 12, 1, 0.89, quantity=2, target='gnd')
     
