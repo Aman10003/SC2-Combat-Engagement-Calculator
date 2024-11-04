@@ -1,25 +1,34 @@
 import math
 import units_def as u
 
-class damage_calculation():
+class damage_calculation:
 
     # Hits to break shields
     # The leftover_damage calculation may be wrong. Liquidpedia isn't clear
-    def htb(self, damage: float, shields: int, shield_armor: int):
-        hits_to_break = math.ceil(shields / (damage-shield_armor))
-        leftover_damage = (damage-shield_armor) - (shields % (damage-shield_armor))
+    # Change calculations for post armor damage into calculations
+    def htb(self, damage: int, shields: int, shield_armor: int):
+        post_armor_damage = self.post_armor_damage(damage, shield_armor)
+        hits_to_break = math.ceil(shields / post_armor_damage)
+        leftover_damage = post_armor_damage - (shields % post_armor_damage)
+        if leftover_damage == post_armor_damage:
+            leftover_damage = 0
+        # leftover_damage = shields % (damage - shield_armor)
         return [hits_to_break, leftover_damage]
 
     # Hits to kill
+    # Post armor damage
+    # Add ability to calculation post armor damage
     # TODO: Zerg regen
-    def htk(damage: float, hp: int, leftover_damage: float = 0):
+    def htk(self, damage: int, hp: int, armor: int, leftover_damage: float = 0):
+        post_armor_damage = self.post_armor_damage(damage, armor)
         hp = hp - leftover_damage
-        return math.ceil(hp / damage)
+        return math.ceil(hp / post_armor_damage)
 
-    def ttk(self, hits_to_kill: int, cooldown: float):
-        # calculates attacks to kill
-        # Does not work for shields yet
-        return hits_to_kill / cooldown
+    @staticmethod
+    def ttk(hits_to_kill: int, cooldown: float):
+        # Calculates time to kill
+        # Does not work for shields yet(maybe)
+        return hits_to_kill * cooldown
 
     # Functions to calculate armor
     # Calculated armor for hp
@@ -35,7 +44,8 @@ class damage_calculation():
         return shield_armor_upgrade + self.armor_mod(raven, guardian_shield)
 
     # Generate armor modify value
-    def armor_mod(self, raven: bool = False, guardian_shield: bool = False, ultra_armor: bool = False):
+    @staticmethod
+    def armor_mod(raven: bool = False, guardian_shield: bool = False, ultra_armor: bool = False):
         armor_mod = 0
         # Raven seeker missile
         if raven:
@@ -49,21 +59,22 @@ class damage_calculation():
         return armor_mod
 
     # Pre mitigation-damage Calculations
-    def damage(self, attacker: u.unit, weapon, defender: u.unit, weapon_upgrade: int,
+    def damage(self, weapon, defender: u.unit, weapon_upgrade: int,
                splash: float = 1, prismatic: bool = False):
-        base_dam = attacker.weapon[weapon]["dmg"[1]]
+        base_dam = weapon['dmg'][0]
         # TODO: Fix bonus damage calc
-        if attacker.weapon[weapon]['bonus'[2]] == defender.attributes:
-            bonus = attacker.weapon[weapon]['bonus'[0]]
-            bonus_scaling = attacker.weapon[weapon]['bonus'[1]]
+        if weapon['bonus'][2] == defender.attributes:
+            bonus = weapon['bonus'][0]
+            bonus_scaling = weapon['bonus'][1]
         else:
             bonus = 0
             bonus_scaling = 0
+        # TODO: Damage Scaling double check
         # Damage Dealt: This is equal to:
         #   (Base attack + Bonus damage + Attack upgrades)*Corrupted*Splash*Hallucinated*Prismatic.
         # Corrupted is removed
         # TODO: Need to add hallucinated and prismatic calculations
-        return (base_dam + bonus + (attacker.weapon[weapon]['dmg'][1] + bonus_scaling) * weapon_upgrade) * splash
+        return (base_dam + bonus + (weapon['dmg'][1] + bonus_scaling) * weapon_upgrade) * splash
 
     # Post armor damage
     def post_armor_damage(self, damage: int, armor: int):
@@ -74,4 +85,4 @@ class damage_calculation():
 
 
 if __name__ == 'main':
-    x=1
+    x = 1

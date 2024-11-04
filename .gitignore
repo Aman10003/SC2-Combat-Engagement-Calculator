@@ -8,3 +8,4 @@ __pycache__/reference.cpython-312.pyc
 main_prototype.py
 *.pyc
 /.idea
+/.vscode/

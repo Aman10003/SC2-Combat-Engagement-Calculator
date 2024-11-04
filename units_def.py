@@ -39,6 +39,7 @@ class unit:
             'bonus': [bonus_damage, bonus_damage_scaling, bonus_damage_attr],
             'qty': quantity,
             'cooldown': cooldown,
+            # gnd, air, or both
             'target': target,
             'spell': spell,
             'ranged': ranged
