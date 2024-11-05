@@ -24,6 +24,7 @@ class functions:
         self.guardian_shield = None
         self.ultra_armor = None
         self.stimpack = None
+        self.combat_shield = None
         self.stimpack_damage = None
         # Armor and weapons upgrades
         self.weapons_upgrades = None
@@ -60,6 +61,7 @@ class functions:
         self.shield_armor = ui.toggle([0,1,2,3], on_change=self.damage_update, value=0)
         ui.label('Armor Upgrade')
         self.armor_upgrade = ui.toggle([0,1,2,3], on_change=self.damage_update, value=0)
+        self.combat_shield = ui.checkbox('Combat Shield (+10 HP)', on_change=self.damage_update)
         self.stimpack_damage = ui.checkbox('Stimpack Damage', on_change=self.damage_update)
         self.guardian_shield = ui.checkbox('Guardian Shield (+2 Armor)', on_change=self.damage_update)
         self.ultra_armor = ui.checkbox('Chitinous Plating (+2 Armor)', on_change=self.damage_update)
@@ -140,10 +142,15 @@ class functions:
         if self.defender_name == 'Marine' or self.defender_name == 'Marauder':
             self.stimpack_damage.visible = True
             if self.defender_name == 'Marine':
+                self.combat_shield.visible = True
                 self.stimpack_damage.text = 'Stimpack: Health - 10'
             else:
+                self.combat_shield.visible = False
+                self.combat_shield.value = False
                 self.stimpack_damage.text = 'Stimpack: Health - 20'
         else:
+            self.combat_shield.visible = False
+            self.combat_shield.value = False
             self.stimpack_damage.visible = False
             self.stimpack_damage.value = False
         # Ultralisk Chitinous Plating option
@@ -200,6 +207,8 @@ class functions:
                 # Hits and time to kill
                 # Calculates HP while accounting for stimpacks
                 hp = self.defender.hp
+                if self.combat_shield:
+                    hp = hp + 10
                 if self.stimpack_damage:
                     if self.defender_name == 'Marine':
                         hp = hp - 10

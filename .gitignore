@@ -9,3 +9,4 @@ main_prototype.py
 *.pyc
 /.idea
 /.vscode/
+qodana.yaml
