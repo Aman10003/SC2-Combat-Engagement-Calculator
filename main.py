@@ -26,6 +26,7 @@ class functions:
         self.stimpack = None
         self.combat_shield = None
         self.stimpack_damage = None
+        self.roach_burrow = None
         # Armor and weapons upgrades
         self.weapons_upgrades = None
         self.armor_upgrade = None
@@ -52,7 +53,7 @@ class functions:
         self.weapon_select = ui.select([], label='Choose Weapon', on_change=self.weapon_update)
         ui.label('Attack Upgrade')
         self.weapons_upgrades = ui.toggle([0,1,2,3], on_change=self.damage_update, value=0)
-        # TODO: Firgure out best way to declare stimpack
+        # TODO: Figure out best way to declare stimpack
         self.stimpack = ui.checkbox('Stimpack: Attack Time -50% ', on_change=self.damage_update)
         self.raven = ui.checkbox('Seeker Missile (-3 Armor)', on_change=self.damage_update)
         ui.label('Defender')
@@ -167,7 +168,7 @@ class functions:
             target = self.weapon['target']
             if target == 'both' or target == 'air' and self.defender.ground is False or target == 'gnd' and self.defender is True:
                 # Calculate pre armor damage
-                pre_armor_damage = self.damage_calc.damage(self.weapon, self.defender, self.weapons_upgrades.value)
+                pre_armor_damage = self.damage_calc.damage(self.weapon, self.defender, self.weapons_upgrades.value, splash=self.weapon['splash'])
                 # Calculate the effective armor and shield armor
                 armor_mod = self.damage_calc.armor_calc(self.defender, self.armor_upgrade.value, self.raven.value,
                                                         self.guardian_shield.value, self.ultra_armor.value)
@@ -216,8 +217,20 @@ class functions:
                         hp = hp - 20
                     else:
                         print('Stimpack Damage Error')
-                htk = self.damage_calc.htk(pre_armor_damage, hp, armor_mod, leftover_damage)
-                ttk = self.damage_calc.ttk(htk, cooldown)
+                if self.defender.race != 'zerg':
+                    htk = self.damage_calc.htk(pre_armor_damage, hp, armor_mod, leftover_damage)
+                    ttk = self.damage_calc.ttk(htk, cooldown)
+                elif self.defender.race == 'zerg':
+                    # Zerg regen health at a rate of 0.38 per s
+                    # Roaches Burrowed regen at a rate of 7 hp per s
+                    # Mutalisks regen at a rate of 1.4 hp per s
+                    regen = 0.38
+                    if self.defender_name == 'Mutalisk':
+                        regen = 1.4
+                    elif self.roach_burrow:
+                        regen = 7
+                    [htk, ttk] = self.damage_calc.zerg_htk_ttk(pre_armor_damage, hp, armor_mod, )
+                    pass
                 self.htk_label.text = f"Hits to kill: {htk} hits"
                 self.ttk_label.text = f"Time to kill: {ttk}s"
             else:

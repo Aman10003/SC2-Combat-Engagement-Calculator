@@ -32,7 +32,7 @@ class unit:
     def add_weapon(self, name: str, damage: int, damage_scaling: int, cooldown: float, 
                    bonus_damage: int = 0, bonus_damage_attr: Attributes = None, 
                    bonus_damage_scaling: int = 0, quantity: int = 1, 
-                   target: str = None, spell: bool = False, ranged: bool = True):
+                   target: str = None, spell: bool = False, ranged: bool = True, splash: float = 1):
         # Generates unit's weapon stats.
         self.weapon[name] = {
             'dmg': [damage, damage_scaling],
@@ -42,7 +42,8 @@ class unit:
             # gnd, air, or both
             'target': target,
             'spell': spell,
-            'ranged': ranged
+            'ranged': ranged,
+            'splash': splash
         }
 
 

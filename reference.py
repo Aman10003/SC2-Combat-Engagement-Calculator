@@ -27,6 +27,9 @@ class Ref:
 
         # Zerg
         # Ultralisk
+        self.units['Ultralisk'] = u.unit(500, 2, race='zerg', attr=u.Attributes(armored=True, bio=True, massive=True))
+        self.units['Ultralisk'].add_weapon('Kaiser Blades', 35, 3, 0.61, target='gnd')
+        self.units['Ultralisk'].add_weapon('Kaiser Blades: Splash 33%', 35, 3, 0.61, target='gnd', splash=0.33)
         return self.units
 
     # Function is used for internal testing only

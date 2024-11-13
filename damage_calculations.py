@@ -30,6 +30,15 @@ class damage_calculation:
         # Does not work for shields yet(maybe)
         return hits_to_kill * cooldown
 
+    # Calculations for zerg ttk and htk
+    # Zerg regen health at a rate of 0.38 per s
+    # Roaches Burrowed regen at a rate of 7 hp per s
+    # Mutalisks regen at a rate of 1.4 hp per s
+    def zerg_htk_ttk(self, damage: int, hp: int, armor: int, cooldown: float, regen: float = 0.38):
+        post_armor_damage = self.post_armor_damage(damage, armor)
+        damage_round = post_armor_damage - cooldown * regen
+        pass
+
     # Functions to calculate armor
     # Calculated armor for hp
     def armor_calc(self, defender: u.unit, armor_upgrade: int, raven: bool = False, guardian_shield: bool = False,
@@ -77,7 +86,8 @@ class damage_calculation:
         return (base_dam + bonus + (weapon['dmg'][1] + bonus_scaling) * weapon_upgrade) * splash
 
     # Post armor damage
-    def post_armor_damage(self, damage: int, armor: int):
+    @staticmethod
+    def post_armor_damage(damage: int, armor: int):
         post_armor_damage = damage - armor
         if post_armor_damage < 0.5:
             post_armor_damage = 0.5
