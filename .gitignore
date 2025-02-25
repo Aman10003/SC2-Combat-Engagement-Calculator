@@ -11,3 +11,4 @@ main_prototype.py
 /.vscode/
 qodana.yaml
 SC2-Engagement-Calculator.code-workspace
+*.pyc
