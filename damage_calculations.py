@@ -34,13 +34,20 @@ class damage_calculation:
     # Zerg regen health at a rate of 0.38 per s
     # Roaches Burrowed regen at a rate of 7 hp per s
     # Mutalisks regen at a rate of 1.4 hp per s
+    # Returns htk and ttk
+    # If regen is larger than DPS, return -1 for htk and min number of units to overcome regen for ttk
     def zerg_htk_ttk(self, damage: int, hp: int, armor: int, cooldown: float, regen: float = 0.38):
         post_armor_damage = self.post_armor_damage(damage, armor)
+        # Prevents infinite htk
+        # If regen is larger than DPS, return -1 for htk and min number of units to overcome regen for ttk
+        if post_armor_damage / cooldown < regen:
+            return [-1, math.ceil(regen/(post_armor_damage / cooldown))]
         damage_round = post_armor_damage - cooldown * regen
         pass
 
     # Functions to calculate armor
     # Calculated armor for hp
+    # Need to check if unit is structure for guardian_shield as guardian_shield doesn't work on building
     def armor_calc(self, defender: u.unit, armor_upgrade: int, raven: bool = False, guardian_shield: bool = False,
                    ultra_armor: bool = False):
         armor = defender.armor
@@ -49,6 +56,7 @@ class damage_calculation:
         return armor
 
     # Calculates shield armor
+    # Need to check if unit is structure for guardian_shield as guardian_shield doesn't work on building
     def shield_armor_calc(self, shield_armor_upgrade: int, raven: bool = False, guardian_shield: bool = False):
         return shield_armor_upgrade + self.armor_mod(raven, guardian_shield)
 

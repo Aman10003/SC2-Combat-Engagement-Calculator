@@ -229,10 +229,14 @@ class functions:
                         regen = 1.4
                     elif self.roach_burrow:
                         regen = 7
-                    [htk, ttk] = self.damage_calc.zerg_htk_ttk(pre_armor_damage, hp, armor_mod, )
+                    [htk, ttk] = self.damage_calc.zerg_htk_ttk(pre_armor_damage, hp, armor_mod, cooldown, regen)
                     pass
-                self.htk_label.text = f"Hits to kill: {htk} hits"
-                self.ttk_label.text = f"Time to kill: {ttk}s"
+                if htk != -1:
+                    self.htk_label.text = f"Hits to kill: {htk} hits"
+                    self.ttk_label.text = f"Time to kill: {ttk}s"
+                else:
+                    self.htk_label.text = f"Attacker {self.attacker_name}' cannot overcomes defender {self.defender_name} regen"
+                    self.ttk_label.text = f"Min number of attackers to overcome regen is {ttk}"
             else:
                 self.htbs_label.visible = False
                 self.ttbs_label.visible = False
