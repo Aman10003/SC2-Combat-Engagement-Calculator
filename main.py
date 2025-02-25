@@ -3,6 +3,7 @@ from nicegui import ui
 import units_def as u
 import reference as ref
 import damage_calculations as dmg
+import port as p
 
 
 class functions:
@@ -255,7 +256,8 @@ class functions:
         function_instance = functions()
         function_instance.units_list()
         function_instance.gui()
-        ui.run(port=8084)
+        port_assignment = p.find_unused_port
+        ui.run(port=port_assignment)
 
 
 # Needs __mp_main__ for ui.run (must be run in multiprocessor)
@@ -264,3 +266,4 @@ if __name__ in {"__main__", "__mp_main__"}:
     # units_def.units
     fun = functions()
     fun.main()
+
