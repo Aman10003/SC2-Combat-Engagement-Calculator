@@ -29,7 +29,7 @@ class Unit:
         return Attributes()
 
     def add_weapon(self, name: str, damage: int, damage_scaling: float, cooldown: float, 
-                   bonus_damage: int = 0, bonus_damage_attr: str = None, 
+                   bonus_damage: int = 0, bonus_damage_attr: Attributes = None, 
                    bonus_damage_scaling: float = 0, quantity: int = 1, 
                    target: str = None, spell: bool = False):
         # Generates unit's weapon stats.
